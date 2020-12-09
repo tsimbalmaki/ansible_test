@@ -1,0 +1,16 @@
+---
+- name: 'Test'
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: hostname srv
+      hostname:
+        name: "{{ inventory_hostname }}"
+    - name: reboot
+      reboot:
+      register: result
+    - name: "when reboot done"
+      debug:
+        msg: "Server {{ inventory_hostname }} successful configured (downtime: {{ result.elapsed }})"
+      when: result.rebooted
